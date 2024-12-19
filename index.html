@@ -1,94 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hover Effects</title>
-  <style>
-    /* CSS Code */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Greeting</title>
+    <style>
+        /* General Page Setup */
+        body {
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #121212;
-      font-family: Arial, sans-serif;
-    }
+        /* Message Container */
+        .message-container {
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInPop 2s ease-out forwards;
+            position: relative;
+            z-index: 2;
+        }
 
-    .container {
-      display: flex;
-      gap: 20px;
-    }
+        .message-container h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #f5d442;
+        }
 
-    .card {
-      position: relative;
-      width: 200px;
-      height: 300px;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
+        .message-container p {
+            font-size: 1.2rem;
+            margin: 0 auto;
+            width: 80%;
+            line-height: 1.5;
+        }
 
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s;
-    }
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(to bottom, #ff0, #f00, #00f);
+            opacity: 0.9;
+            animation: confetti-fall 3s ease-out infinite;
+        }
 
-    .card:hover img {
-      transform: scale(1.2);
-    }
+        /* Animations */
+        @keyframes fadeInPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-    .card .text {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-
-    .card:hover .text {
-      opacity: 1;
-    }
-  </style>
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- HTML Code -->
-  <div class="container">
-    <div class="card">
-      <img src="https://via.placeholder.com/200x300" alt="Placeholder Image 1">
-      <div class="text">Card 1</div>
+    <!-- Message Section -->
+    <div class="message-container">
+        <h1>Happy Birthday!</h1>
+        <p>
+            On behalf of the entire <strong>KAPL</strong> family, we extend our warmest wishes for your birthday. May this day bring you immense joy, success, and memorable moments. You are a valued part of our team, and we celebrate your special day with heartfelt cheer!
+        </p>
+        <p>Have a fantastic birthday! 🎉</p>
+        <p><em>Best regards,<br>KAPL Team</em></p>
     </div>
-    <div class="card">
-      <img src="https://via.placeholder.com/200x300" alt="Placeholder Image 2">
-      <div class="text">Card 2</div>
-    </div>
-    <div class="card">
-      <img src="https://via.placeholder.com/200x300" alt="Placeholder Image 3">
-      <div class="text">Card 3</div>
-    </div>
-  </div>
 
-  <!-- JavaScript Code -->
-  <script>
-    // JavaScript is optional in this case
-    console.log("Hover effects applied to cards.");
-  </script>
+    <script>
+        // Confetti Effect on Blast
+        function launchConfetti() {
+            const colors = ["#f5d442", "#f54242", "#42f554", "#4287f5", "#f542f5"];
+            const numConfetti = 100;
+
+            for (let i = 0; i < numConfetti; i++) {
+                const confetti = document.createElement("div");
+                confetti.classList.add("confetti");
+                document.body.appendChild(confetti);
+
+                // Random Position
+                confetti.style.left = Math.random() * (window.innerWidth / 2) + "px";
+                confetti.style.right = Math.random() * (window.innerWidth / 2) + "px";
+                confetti.style.top = "-10px";
+
+                // Random Color
+                confetti.style.backgroundColor =
+                    colors[Math.floor(Math.random() * colors.length)];
+
+                // Random Delay
+                confetti.style.animationDelay = Math.random() * 1 + "s";
+
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Blast Confetti after Message Animation
+        setTimeout(() => {
+            launchConfetti();
+        }, 2500); // Wait for the text to animate, then blast confetti
+    </script>
 </body>
 </html>
