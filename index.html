@@ -21,32 +21,38 @@
 
         /* Centered Message Card */
         .message-card {
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent card */
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #FFB347, #FFCC33); /* Birthday card gradient */
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 204, 51, 0.5);
             padding: 30px;
             text-align: center;
             max-width: 600px;
-            opacity: 0;
             animation: fadeIn 2s ease-out forwards;
-            position: relative;
+            opacity: 0;
             z-index: 2;
         }
 
         .message-card h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            color: #f5d442;
+            color: #fff;
         }
 
         .message-card p {
             font-size: 1.1rem;
             margin: 10px 0;
             line-height: 1.5;
+            color: #fff;
         }
 
-        /* Blaster Confetti */
+        /* KAPL Logo */
+        .logo {
+            margin-top: 20px;
+            width: 80px;
+            height: auto;
+        }
+
+        /* Confetti Blaster */
         .confetti-blast {
             position: fixed;
             width: 8px;
@@ -55,6 +61,28 @@
             border-radius: 50%;
             animation: blast 1s ease-out;
             opacity: 0.8;
+        }
+
+        /* Balloon Animation */
+        .balloon {
+            position: fixed;
+            width: 50px;
+            height: 70px;
+            background: radial-gradient(circle, #FF6384, #FF4757);
+            border-radius: 50%;
+            bottom: -100px;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .balloon::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: #fff;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         /* Keyframe Animations */
@@ -79,6 +107,20 @@
                 opacity: 0;
             }
         }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) rotate(3deg);
+            }
+            100% {
+                transform: translateY(-400px) rotate(-3deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -94,6 +136,8 @@
         </p>
         <p>Have a fantastic birthday! 🎉</p>
         <p><em>Best regards,<br>KAPL Team</em></p>
+        <!-- Logo -->
+        <img src="logo.png" alt="KAPL Logo" class="logo">
     </div>
 
     <script>
@@ -108,7 +152,7 @@
 
                 // Randomize the blast direction and position
                 const angle = Math.random() * Math.PI * 2; // Random direction
-                const distance = Math.random() * 200 + 50; // Distance to blast
+                const distance = Math.random() * 150 + 50; // Distance to blast
                 const x = Math.cos(angle) * distance;
                 const y = Math.sin(angle) * distance;
 
@@ -130,9 +174,29 @@
             }
         }
 
-        // Trigger blaster after message fade-in
+        // Floating Balloons
+        function createBalloons() {
+            const numBalloons = 10;
+
+            for (let i = 0; i < numBalloons; i++) {
+                const balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.animationDuration = `${Math.random() * 3 + 5}s`;
+
+                document.body.appendChild(balloon);
+
+                setTimeout(() => {
+                    balloon.remove();
+                }, 8000); // Remove balloon after animation
+            }
+        }
+
+        // Trigger blaster and balloons after message fade-in
         setTimeout(() => {
             createBlasterEffect();
+            createBalloons();
         }, 2000); // Adjust timing to match the fade-in
     </script>
 </body>
