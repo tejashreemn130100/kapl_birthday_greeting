@@ -8,6 +8,7 @@
         /* General Page Setup */
         body {
             margin: 0;
+            padding: 0;
             background-color: #000;
             color: #fff;
             font-family: Arial, sans-serif;
@@ -18,41 +19,46 @@
             overflow: hidden;
         }
 
-        /* Message Container */
-        .message-container {
+        /* Centered Message Card */
+        .message-card {
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent card */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            padding: 30px;
             text-align: center;
+            max-width: 600px;
             opacity: 0;
-            transform: scale(0.8);
-            animation: fadeInPop 2s ease-out forwards;
+            animation: fadeIn 2s ease-out forwards;
             position: relative;
             z-index: 2;
         }
 
-        .message-container h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .message-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
             color: #f5d442;
         }
 
-        .message-container p {
-            font-size: 1.2rem;
-            margin: 0 auto;
-            width: 80%;
+        .message-card p {
+            font-size: 1.1rem;
+            margin: 10px 0;
             line-height: 1.5;
         }
 
-        /* Confetti Animation */
-        .confetti {
+        /* Blaster Confetti */
+        .confetti-blast {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background: linear-gradient(to bottom, #ff0, #f00, #00f);
-            opacity: 0.9;
-            animation: confetti-fall 3s ease-out infinite;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #ff0, #f00, #00f, #0f0);
+            border-radius: 50%;
+            animation: blast 1s ease-out;
+            opacity: 0.8;
         }
 
-        /* Animations */
-        @keyframes fadeInPop {
+        /* Keyframe Animations */
+        @keyframes fadeIn {
             0% {
                 opacity: 0;
                 transform: scale(0.8);
@@ -63,61 +69,71 @@
             }
         }
 
-        @keyframes confetti-fall {
+        @keyframes blast {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translate(0, 0);
+                opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(720deg);
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Message Section -->
-    <div class="message-container">
+    <!-- Message Card -->
+    <div class="message-card">
         <h1>Happy Birthday!</h1>
         <p>
-            On behalf of the entire <strong>KAPL</strong> family, we extend our warmest wishes for your birthday. May this day bring you immense joy, success, and memorable moments. You are a valued part of our team, and we celebrate your special day with heartfelt cheer!
+            On behalf of the entire <strong>KAPL</strong> family, we extend our warmest wishes for your birthday. 
+            May this day bring you immense joy, success, and memorable moments.
+        </p>
+        <p>
+            You are a valued part of our team, and we celebrate your special day with heartfelt cheer!
         </p>
         <p>Have a fantastic birthday! 🎉</p>
         <p><em>Best regards,<br>KAPL Team</em></p>
     </div>
 
     <script>
-        // Confetti Effect on Blast
-        function launchConfetti() {
+        // Blaster Effect
+        function createBlasterEffect() {
+            const numParticles = 100;
             const colors = ["#f5d442", "#f54242", "#42f554", "#4287f5", "#f542f5"];
-            const numConfetti = 100;
 
-            for (let i = 0; i < numConfetti; i++) {
+            for (let i = 0; i < numParticles; i++) {
                 const confetti = document.createElement("div");
-                confetti.classList.add("confetti");
-                document.body.appendChild(confetti);
+                confetti.classList.add("confetti-blast");
 
-                // Random Position
-                confetti.style.left = Math.random() * (window.innerWidth / 2) + "px";
-                confetti.style.right = Math.random() * (window.innerWidth / 2) + "px";
-                confetti.style.top = "-10px";
+                // Randomize the blast direction and position
+                const angle = Math.random() * Math.PI * 2; // Random direction
+                const distance = Math.random() * 200 + 50; // Distance to blast
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
 
-                // Random Color
+                confetti.style.setProperty("--x", `${x}px`);
+                confetti.style.setProperty("--y", `${y}px`);
+
                 confetti.style.backgroundColor =
                     colors[Math.floor(Math.random() * colors.length)];
 
-                // Random Delay
-                confetti.style.animationDelay = Math.random() * 1 + "s";
+                confetti.style.left = "50%";
+                confetti.style.top = "50%";
+
+                document.body.appendChild(confetti);
 
                 // Remove confetti after animation
                 setTimeout(() => {
                     confetti.remove();
-                }, 3000);
+                }, 1000);
             }
         }
 
-        // Blast Confetti after Message Animation
+        // Trigger blaster after message fade-in
         setTimeout(() => {
-            launchConfetti();
-        }, 2500); // Wait for the text to animate, then blast confetti
+            createBlasterEffect();
+        }, 2000); // Adjust timing to match the fade-in
     </script>
 </body>
 </html>
