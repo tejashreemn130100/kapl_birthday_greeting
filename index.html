@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color:#e3d3d3;
+            background-color: #e3d3d3;
             color: #fff;
             font-family: Arial, sans-serif;
             display: flex;
@@ -17,6 +17,7 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            position: relative; /* Make sure confetti appears in full page */
         }
 
         /* Centered Message Card */
@@ -54,12 +55,12 @@
 
         /* Confetti Blaster */
         .confetti-blast {
-            position: fixed;
-            width: 8px;
-            height: 8px;
+            position: absolute;
+            width: 10px;
+            height: 10px;
             background: linear-gradient(135deg, #ff0, #f00, #00f, #0f0);
             border-radius: 50%;
-            animation: blast 1s ease-out;
+            animation: blast 2s ease-out;
             opacity: 0.8;
         }
 
@@ -152,7 +153,7 @@
 
                 // Randomize the blast direction and position
                 const angle = Math.random() * Math.PI * 2; // Random direction
-                const distance = Math.random() * 150 + 50; // Distance to blast
+                const distance = Math.random() * 200 + 50; // Distance to blast
                 const x = Math.cos(angle) * distance;
                 const y = Math.sin(angle) * distance;
 
@@ -162,25 +163,46 @@
                 confetti.style.backgroundColor =
                     colors[Math.floor(Math.random() * colors.length)];
 
-                confetti.style.left = "50%";
-                confetti.style.top = "50%";
+                // Place confetti all over the page
+                const xPos = Math.random() * window.innerWidth; // Random horizontal position
+                const yPos = Math.random() * window.innerHeight; // Random vertical position
+
+                confetti.style.left = `${xPos}px`;
+                confetti.style.top = `${yPos}px`;
 
                 document.body.appendChild(confetti);
 
                 // Remove confetti after animation
                 setTimeout(() => {
                     confetti.remove();
-                }, 1000);
+                }, 2000); // Confetti lasts for 2 seconds
             }
         }
-
-        
 
         // Trigger blaster and balloons after message fade-in
         setTimeout(() => {
             createBlasterEffect();
-            
+            createBalloons();
         }, 2000); // Adjust timing to match the fade-in
+
+        // Floating Balloons
+        function createBalloons() {
+            const numBalloons = 10;
+
+            for (let i = 0; i < numBalloons; i++) {
+                const balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+
+                balloon.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+                balloon.style.animationDuration = `${Math.random() * 3 + 5}s`; // Random duration for floating
+
+                document.body.appendChild(balloon);
+
+                setTimeout(() => {
+                    balloon.remove();
+                }, 8000); // Remove balloon after animation
+            }
+        }
     </script>
 </body>
 </html>
